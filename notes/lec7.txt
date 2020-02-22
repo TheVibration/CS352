@@ -1,0 +1,36 @@
+the sum and checksum's value should equal to one. it is also possible for the checksum to get corrupted.
+
+the checksum allows you to detect single bit errors, but not true if it's more than single bits.
+
+if there are 4 , 16 bit lines = 64, then you need to add the 16 bit results in order.
+
+***-reliable data delivery-***
+
+-packet loss
+
+acknowledgement is when a client sends a packet and the server sends a acknowledgement(ACK) back that they got the message.
+
+a nak is send negative acknowledgement to let the sender know the package was sent corrupted when it was sent to the receiver
+
+another method is retransmission timeout which is to resend a package if an ACK isn't send to the sender within a certain period of time.
+
+the retransmit time can be changed
+
+sequence number is on a packet to identify it so if the sender resends the packet if an ACK isn't send during before the retransmit time then the receiver knows that the same packet is being send from the sender.
+
+sequence numbers are local to a specific connection. sequence numbers are written on the header of the packet.
+
+what should the sequence number of the third packet be if ack's have been sent to the sender? they can be reused as long as it isn't the same sequence number of the last packet sent, so if 0 is ack and 1 is ack then only 0 should be used again
+
+packet size/round_trip_time is the rate the sender is getting data across to the receiver
+
+packet size : 12000bits
+rtt = 100 milliseconds
+
+120kilobits/second
+
+how would you make better use of the link rate?
+
+pipiine send new packets as packets are being sent.
+
+

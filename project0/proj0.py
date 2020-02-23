@@ -14,7 +14,7 @@ def server():
 
     server_binding = ('', 50007)
     ss.bind(server_binding)
-    ss.listen(1)
+    snew vims.listen(1)
     host = socket.gethostname()
     print("[S]: Server host name is {}".format(host))
     localhost_ip = (socket.gethostbyname(host))

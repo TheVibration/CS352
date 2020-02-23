@@ -30,3 +30,19 @@ def socket():
     # accept incoming connections
     csockid, addr = rs.accept()
     print("[rs]: Got a connection request from a client at {}".format(addr))
+
+    data_from_client = rs.recv(1024)
+    print("[rs]: data received from client: {}".format(data_from_client.decode('utf-8')))
+
+    #close the server socket
+    rs.close()
+    exit()
+
+if __name__ == "__main__":
+    t1 = threading.Thread(name="server", target=server)
+    t1.start()
+
+    time.sleep(random.random() * 5)
+
+    time.sleep(5)
+    print("Finished")

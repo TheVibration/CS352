@@ -26,13 +26,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rs_clientsocket:
     rs_clientsocket.connect(rootServerBinding)
     
     # send message to server
-    """
     with open("PROJI-HNS.txt", "r") as f:
         for line in f:
-            s.sendall(line.encode())
-    """
-    rs_clientsocket.send("HELLLLLLOOOOOOO".encode())
+            rs_clientsocket.sendall(line.encode())
 
+    #rs_clientsocket.sendall("HELLLLLLOOOOOOO".encode())
+    #rs_clientsocket.sendall("WORLDDDDDD".encode())
     """
     # get top server's hostname
     tsHostname = socket.gethostname()

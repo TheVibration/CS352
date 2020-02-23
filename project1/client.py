@@ -25,11 +25,20 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rs_clientsocket:
     # connect to root server 
     rs_clientsocket.connect(rootServerBinding)
     
-    # send message to server
+    # domain name list from text file
+    lst = []
+    # open up file and go through each line, place contents in list called lst
     with open("PROJI-HNS.txt", "r") as f:
-        for line in f:
-            rs_clientsocket.sendall(line.encode())
-
+        lines = f.readlines()
+        print(lines)
+    for line in lines:
+        lst.append(line.strip())
+    
+    #send contents on lst to server
+    for domainName in lst:
+        print(domainName)
+        rs_clientsocket.send(domainName.encode('utf-8'))
+    
     #rs_clientsocket.sendall("HELLLLLLOOOOOOO".encode())
     #rs_clientsocket.sendall("WORLDDDDDD".encode())
     """

@@ -12,11 +12,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rs:
     
     # get root server host name
     rsServerHost = socket.gethostname()
-    print("[rs]: root server name is {}\n".format(rsServerHost))
+    print("[rs]: root server name is {}".format(rsServerHost))
     
     # get root server ip address
     rsHostip = socket.gethostbyname(rsServerHost)
-    print("[rs] root server ip is {}\n".format(rsHostip))
+    print("[rs] root server ip is {}".format(rsHostip))
     
     #bind host,port
     rs.bind((rsServerHost,rsListenPort))
@@ -32,12 +32,26 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rs:
     domain_list = []
     with csockid:
         print("Connected by ", addr)
+        print("\n")
         while True:
             data_from_client = csockid.recv(1024).decode('utf-8')
             print("[rs]: data received from client: {}".format(data_from_client))
             domain_list.append(data_from_client)
             if not data_from_client:
                 break
+    
+    #this was created because for some reason
+    #the last value the server is receiving from
+    #the client is ''. so this loop goes through
+    #the domain_list and removed that ''.
+    counter = 0
+    for domain in domain_list:
+        if domain == '':
+            del domain_list[counter]
+        else:
+            counter = counter+1
+
+    print("\n")
     print(domain_list)
 """
 if __name__ == "__main__":

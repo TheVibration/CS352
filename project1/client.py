@@ -34,12 +34,24 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rs_clientsocket:
     for line in lines:
         lst.append(line.strip())
     
+    msgrec = rs_clientsocket.recv(1024).decode('utf-8')
+    while msgrec:
+        print("[C] Message from rs server: {}".format(msgrec))
+        break
     #send contents on lst to server
     print("\n")
     for domainName in lst:
-        print(domainName)
+        print(domainName) #this helps with sending domainName efficiently. put time instead.
         rs_clientsocket.send(domainName.encode('utf-8'))
     
+    
+    #delete if doesn't work trying to receive from server
+    #while True:
+        #msg_from_server = rs_clientsocket.recv(1024).decode('utf-8')
+        #print("[C] Message received from server: {}".format(msg_from_server))
+        
+        #if not msg_from_server:
+            #break
     #rs_clientsocket.sendall("HELLLLLLOOOOOOO".encode())
     #rs_clientsocket.sendall("WORLDDDDDD".encode())
     """

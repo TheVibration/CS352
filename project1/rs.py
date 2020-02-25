@@ -6,6 +6,7 @@ import sys
 
 rsListenPort = sys.argv[1]
 rsListenPort = int(rsListenPort)
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rs:
     
     print("[rs]: root server created")
@@ -30,16 +31,25 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rs:
    
     #create a list temporarily to hold domain names from client
     domain_list = []
-    with csockid:
-        print("Connected by ", addr)
-        print("\n")
-        while True:
-            data_from_client = csockid.recv(1024).decode('utf-8')
-            print("[rs]: data received from client: {}".format(data_from_client))
-            domain_list.append(data_from_client)
-            if not data_from_client:
-                break
+    print("Connected by ", addr)
+    print("\n")
     
+    msg = "tester"
+    msg2 = "tester2"
+    csockid.send(msg.encode('utf-8'))
+    csockid.send(msg2.encode('utf-8'))
+    while True:
+        data_from_client = csockid.recv(1024).decode('utf-8')
+        print("[rs]: data received from client: {}".format(data_from_client))
+        domain_list.append(data_from_client)
+
+        if not data_from_client:
+            break
+
+    #for domain in domain_list:
+        #csockid.send(domain.encode('utf-8'))
+    
+
     #this was created because for some reason
     #the last value the server is receiving from
     #the client is ''. so this loop goes through
@@ -53,6 +63,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rs:
 
     print("\n")
     print(domain_list)
+
 """
 if __name__ == "__main__":
     t1 = threading.Thread(name="server", target=server)

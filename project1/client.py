@@ -40,12 +40,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rs_clientsocket:
         print(domainName)
         rs_clientsocket.send(domainName.encode('utf-8'))
     
+    # receive from the rs.py server
+    #data_from_server = rs_clientsocket.recv(1024)
+    #print("[C] Data received from server: {}".format(data_from_server.decode('utf-8'))
+
     #rs_clientsocket.sendall("HELLLLLLOOOOOOO".encode())
     #rs_clientsocket.sendall("WORLDDDDDD".encode())
-    """
-    # get top server's hostname
-    tsHostname = socket.gethostname()
-    # get top server's ip
-   tsHostip = socket.gethostbyname(tsHostname)
-    """
-

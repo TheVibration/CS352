@@ -39,6 +39,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rs:
             domain_list.append(data_from_client)
             if not data_from_client:
                 break
+        #test sending from rs.py to client
+        #msg = "testing testing testing!"
+        #csockid.send(msg.encode('utf-8'))
     
     #this was created because for some reason
     #the last value the server is receiving from

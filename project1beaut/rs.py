@@ -99,7 +99,7 @@ def server():
         result = return_dns_query(newDict,dn)
  	csockid.send(result.encode('utf-8'))
 	time.sleep(3)
-    csockid.send("0".encode('utf-8'))
+    csockid.send("00".encode('utf-8'))
     print(domain_list)
     print("\n")
     print(newDict)

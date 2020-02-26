@@ -55,8 +55,9 @@ def client():
     while cond:
 	from_rs = cs.recv(2048).decode('utf-8')
 	time.sleep(2)
-	return_lst.append(from_rs)
-	if from_rs == "0":
+	if from_rs != "00":
+	    return_lst.append(from_rs)
+	elif from_rs == "00":
 	    cond = False
     print(return_lst)
     print("Program ended")

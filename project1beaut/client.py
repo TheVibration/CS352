@@ -36,29 +36,39 @@ def client():
         #print(lines)
     for line in lines:
         lst.append(line.strip())
+    
 
     #send contents on lst to server
     print("\n")
     for domainName in lst:
         print(domainName) #this helps with sending domainName efficiently. put time instead.
         cs.send(domainName.encode('utf-8'))
-    
+   	time.sleep(1) 
+	msg_recv = cs.recv(100).decode('utf-8')
+	print("[C] Message received from RS Server: {}".format(msg_recv))
+    cs.send("0".encode('utf-8'))	
+    time.sleep(10)
+    msg = cs.recv(1024).decode('utf-8')
+    print("[C] {}".format(msg))
     #receive message from server after sending domain names to server
     #to salman abu khan, this is where the test message should be received, but isn't.
     #after we can implement receiving one message back from the root server, then we can 
     #implement receiving multiple messages which would be the return strings hostname ip flag if exists
     #and other return string format if flag is NS
-    msg_recv = cs.recv(128).decode('utf-8')
-    print("[C] Message from server: {}".format(msg_recv))
     
+    #cs.send("hey from client".encode('utf-8'))
+    #msg_recv = cs.recv(1024)
+    #time.sleep(1)
+    #print("[C] Message from server: {}".format(msg_recv.decode('utf-8')))
+         
 if __name__ == "__main__":
     #t1 = threading.Thread(name='server', target=server)
     #t1.start()
 
-    #time.sleep(random.random() * 5)
+    time.sleep(random.random() * 5)
     t2 = threading.Thread(name='client', target=client)
     t2.start()
 
-    time.sleep(5)
+    #time.sleep(40)
     print("Done.")
     

@@ -24,7 +24,7 @@ def server():
     print("[TS] root server ip is {}".format(tsHostip))
   
     # bind host,port
-    rs.bind((tsServerHost, tsListenPort))
+    ts.bind((tsServerHost, tsListenPort))
 
     # top server listens
     ts.listen(5)

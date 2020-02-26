@@ -33,5 +33,10 @@ def server():
     csockid, addr = ts.accept()
     print("[RS]: Got a connection request from a client at {}\n".format(addr))
 
-    
+if __name__ == "__main__":
+    t3 = threading.Thread(name='server', target=server)
+    t3.start()
+
+    time.sleep(random.random() * 5)
+    print("Done.")
 

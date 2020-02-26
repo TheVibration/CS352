@@ -81,24 +81,22 @@ def server():
     cond = True   
     while cond:
         data_from_client = csockid.recv(1024).decode('utf-8')
-	domain_list.append(data_from_client)
-	print("[RS]: data received from client: {}".format(data_from_client))
+        if data_from_client != "*":
+	    domain_list.append(data_from_client)
+	    print("[RS]: data received from client: {}".format(data_from_client))
+	elif data_from_client == "*":
+	    cond = False
 	time.sleep(2)
-	#csockid.send(data_from_client.encode('utf-8'))
-	#time.sleep(1)
-	#echo data_from_client back to client
-	
-        #where appending 1 problem is happening
-        if data_from_client == "*":
-            cond = False
+        	
     time.sleep(5)
     
-    if "*" in domain_list:
-        domain_list.remove("*")	
+    #if "*" in domain_list:
+        #domain_list.remove("*")	
     
     print("\n[RS] Domains received from client:")		
     print(domain_list)
     print("\n")
+
     #a way to send the correct string back to client
     for dn in domain_list:
         result = return_dns_query(newDict,dn)
@@ -107,22 +105,8 @@ def server():
 	time.sleep(3)
     csockid.send("00".encode('utf-8'))
     #print(domain_list)
-    print("\nDNS name server as hash map:")
+    print("\nRS DNS table as hash map:")
     print(newDict)
-
-    # these can be deleted just to test sending and receiving with single vals
-    #data = csockid.recv(1024).decode('utf-8')
-    #print("[RS] Message received from client: {}".format(data))
-    #csockid.send(data.encode('utf-8'))
-
-    #try sending test message to server after receiving domain names
-    #to salman abu khan, this is where the problem begins. why isn't this message
-    #being sent and successfully received at the client side? if this can be
-    #successfully implemented we can send the actual return string back to
-    #the client from the root server
-    
-    #msg = "Hi from server"
-    #csockid.send(msg.encode('utf-8'))
 
 if __name__ == "__main__":
     t1 = threading.Thread(name='server', target=server)

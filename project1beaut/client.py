@@ -60,7 +60,7 @@ def client():
 	from_rs = cs.recv(1024).decode('utf-8')
 	time.sleep(2)
 	if from_rs != "00":
-	    print("[C] debugger {}".format(from_rs))
+	    print("[C] debugger: {}".format(from_rs))
 	    return_lst.append(from_rs)
 	elif from_rs == "00":
 	    cond = False

@@ -9,8 +9,47 @@ rsListenPort = int(rsListenPort)
 
 def sendData(value,sock):
     sock.send(value.encode('utf-8'))
+
+def file_to_dict(fileName):
+
+    f = open(fileName, "r")
+
+    lst = []
+    dic = {}
+
+    for line in f:
+        for word in line.split():
+            lst.append(word)
+
+def return_dns_query(dictionary,domain):
+    if domain in dictionary:
+        values = dictionary[domain]
+        ipaddress = values[0] 
+        flag = values[1]
+        return domain + " " + ipaddress + " " + flag
+    else:
+        return domain + " - NS"
+
+    counter = 0
+    for entry in lst:
+        if counter == 0:
+            currentKey = entry
+            values = []
+            counter = counter + 1
+        elif counter == 1:
+            values.append(entry)
+            counter = counter + 1
+        elif counter == 2:
+            values.append(entry)
+            dic[currentKey] = values
+            counter = 0
     
+    f.close()
+    return dic
+
 def server():
+    newDict = file_to_dict("PROJI-DNSRS.txt")
+
     try:
         rs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print("[RS]: Server socket created")
@@ -59,6 +98,7 @@ def server():
 	if dn == "0":
 	    domain_list.remove("0")
     print(domain_list)
+    print(newDict)
     csockid.sendall("hi from server!".encode('utf-8'))
     print("IM TRYING TO SEND TO CLIENT")
     #csockid.send("hi".encode('utf-8'))

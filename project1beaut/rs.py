@@ -24,7 +24,7 @@ def file_to_dict(fileName):
     counter = 0
     for entry in lst:
         if counter == 0:
-            currentKey = entry
+            currentKey = entry.lower()
             values = []
             counter = counter + 1
         elif counter == 1:
@@ -80,7 +80,7 @@ def server():
 
     cond = True   
     while cond:
-        data_from_client = csockid.recv(1024).decode('utf-8')
+        data_from_client = csockid.recv(1024).decode('ascii')
         if data_from_client != "*":
 	    domain_list.append(data_from_client)
 	    print("[RS]: data received from client: {}".format(data_from_client))
@@ -94,16 +94,17 @@ def server():
         #domain_list.remove("*")	
     
     print("\n[RS] Domains received from client:")		
+    domain_list = [str(r) for r in domain_list]
     print(domain_list)
     print("\n")
 
     #a way to send the correct string back to client
     for dn in domain_list:
-        result = return_dns_query(newDict,dn)
+        result = return_dns_query(newDict,dn.lower())
 	print("[RS] sending to client: {}".format(result))
- 	csockid.send(result.encode('utf-8'))
+ 	csockid.send(result.encode('ascii'))
 	time.sleep(3)
-    csockid.send("00".encode('utf-8'))
+    csockid.send("00".encode('ascii'))
     #print(domain_list)
     print("\nRS DNS table as hash map:")
     print(newDict)

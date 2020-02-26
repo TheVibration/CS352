@@ -10,6 +10,13 @@ rsListenPort = int(rsListenPort)
 tsListenPort = sys.argv[3]
 tsListenPort = int(tsListenPort)
 
+# This function is for writing to RESOLVED.txt
+def writing(dnList, fileName):
+    for domain in dnList:
+        f = open(fileName, "a")
+        f.write(domain+"\n")
+    f.close()
+
 def client():
     try:
         cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -42,22 +49,20 @@ def client():
     #send contents on lst to server
     print("\n")
     for domainName in lst:
-        print(domainName) #this helps with sending domainName efficiently. put time instead.
-        cs.send(domainName.encode('utf-8'))
+        print("[C] Sending domain to RS: {}".format(domainName)) #this helps with sending domainName efficiently. put time instead.
+        cs.send(domainName.encode('ascii'))
    	time.sleep(2) 
-	#msg_recv = cs.recv(100).decode('utf-8')
-	#print("[C] Message received from RS Server: {}".format(msg_recv))
-    cs.send("*".encode('utf-8'))	
+    cs.send("*".encode('ascii'))	
     time.sleep(8)
-    #msg = cs.recv(1024).decode('utf-8')
-    #print("[C] {}".format(msg))
+    
+    # return_lst is going to hold the host,ip,flag returned from rs
     return_lst = []
     print("\n")
     
     cond = True
     #this while loop begins receiving the hostname,ip,flag
     while cond:
-	from_rs = cs.recv(1024).decode('utf-8')
+	from_rs = cs.recv(1024).decode('ascii')
 	time.sleep(2)
 	if from_rs != "00":
 	    print("[C] debugger: {}".format(from_rs))
@@ -67,18 +72,21 @@ def client():
     
     print("\n[C] hostname,ip,flag in list:")
     print(return_lst)
-	
-    #receive message from server after sending domain names to server
-    #to salman abu khan, this is where the test message should be received, but isn't.
-    #after we can implement receiving one message back from the root server, then we can 
-    #implement receiving multiple messages which would be the return strings hostname ip flag if exists
-    #and other return string format if flag is NS
     
-    #cs.send("hey from client".encode('utf-8'))
-    #msg_recv = cs.recv(1024)
-    #time.sleep(1)
-    #print("[C] Message from server: {}".format(msg_recv.decode('utf-8')))
-         
+    # this list contains valid domain name mappings
+    # received from rs.py with a valid A flag
+    a_rslst = []
+    ns_tslst = []
+    for string in return_lst:
+        if 'NS' not in string:
+	    a_rslst.append(string)
+	else:
+	    ns_tslst.append(string)
+    print("\n[C] list with A strings from RS:")
+    print(a_rslst)	
+    print("\n[C] list with NS string that need to be sent to ts.py:")
+    print(ns_tslst)
+
 if __name__ == "__main__":
     #t1 = threading.Thread(name='server', target=server)
     #t1.start()

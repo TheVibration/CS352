@@ -38,6 +38,15 @@ def file_to_dict(fileName):
     f.close()
     return dic
 
+# go through the dictionary and find where the tshostname is
+def getTS(dictionary):
+    for key in dictionary:
+        k = dictionary[key]
+	if k[1] == "NS":
+	    returnVal = key 
+            break
+    return returnVal
+
 def return_dns_query(dictionary,domain):
     if domain in dictionary:
         values = dictionary[domain]
@@ -105,6 +114,9 @@ def server():
  	csockid.send(result.encode('ascii'))
 	time.sleep(3)
     csockid.send("00".encode('ascii'))
+    time.sleep(1)
+    tsHostName = getTS(newDict)
+    csockid.send(tsHostName.encode("ascii"))
     #print(domain_list)
     print("\nRS DNS table as hash map:")
     print(newDict)

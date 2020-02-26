@@ -77,7 +77,11 @@ def client():
 	    return_lst.append(from_rs)
 	elif from_rs == "00":
 	    cond = False
-    
+   
+    time.sleep(1)
+    TShostname = cs.recv(1024).decode('ascii') 
+    print("\n[C] TSHostName from RS is: {}".format(TShostname))
+
     print("\n[C] hostname,ip,flag in list:")
     return_lst = [str(r) for r in return_lst] #gets rid of u
     print(return_lst)

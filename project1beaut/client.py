@@ -26,13 +26,14 @@ def returnSplitter(lst):
     return send_to_ts
 
 def client():
+    # create a socket for rs connection
     try:
         cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print("[C]: Client socket created")
     except socket.error as err:
         print('socket open error: {} \n'.format(err))
         exit()
-    
+
     # get root server's ip
     # rsHostname is given as argument1 in command line
     rsHostip = socket.gethostbyname(rsHostname)
@@ -78,6 +79,7 @@ def client():
 	elif from_rs == "00":
 	    cond = False
    
+    # receive the tshostname from rs.py and store it in a variable
     time.sleep(1)
     TShostname = cs.recv(1024).decode('ascii') 
     print("\n[C] TSHostName from RS is: {}".format(TShostname))
@@ -106,6 +108,16 @@ def client():
     send_to_ts = returnSplitter(ns_tslst)
     print("\n[C] domain names to try in ts:")
     print(send_to_ts)
+
+    if not send_to_ts.empty():
+        #create a socket for ts connection
+        try:
+            cs2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            print("[C]: Client socket for ts created")
+        except socket.error as err:
+            print('socket open error: {} \n'.format(err))
+            exit()
+    
 if __name__ == "__main__":
     #t1 = threading.Thread(name='server', target=server)
     #t1.start()

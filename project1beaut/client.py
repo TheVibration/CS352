@@ -109,15 +109,25 @@ def client():
     print("\n[C] domain names to try in ts:")
     print(send_to_ts)
 
-    if not send_to_ts.empty():
+    if send_to_ts:
         #create a socket for ts connection
         try:
             cs2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            print("[C]: Client socket for ts created")
+            print("\n[C]: Client socket for ts created")
         except socket.error as err:
             print('socket open error: {} \n'.format(err))
             exit()
+    # get top server's ip
+    # TShostname is the top server's hostname
+    tsHostip = socket.gethostbyname(TShostname)
+    print("[C]: Top Server's host is {} and ip is {}.".format(TShostname, tsHostip))
     
+    # client connects to ts host machine
+    topServerBinding = (TShostname,tsListenPort)
+    # connect to top server
+    cs2.connect(topServerBinding)
+
+
 if __name__ == "__main__":
     #t1 = threading.Thread(name='server', target=server)
     #t1.start()

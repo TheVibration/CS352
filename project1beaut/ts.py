@@ -7,7 +7,46 @@ import socket
 tsListenPort = sys.argv[1]
 tsListenPort = int(tsListenPort)
 
+def file_to_dict(fileName):
+    
+    f = open(fileName, "r")
+
+    lst = []
+    dic = {}
+
+    for line in f:
+        for word in line.split():
+            lst.append(word)
+
+    counter = 0
+    for entry in lst:
+        if counter == 0:
+            currentKey = entry.lower()
+            values = []
+            counter = counter + 1
+        elif counter == 1:
+            values.append(entry)
+            counter = counter + 1
+        elif counter == 2:
+            values.append(entry)
+            dic[currentKey] = values
+            counter = 0
+    
+    f.close()
+    return dic
+
+def return_dns_query(dictionary,domain):
+    if domain in dictionary:
+        values = dictionary[domain]
+        ipaddress = values[0] 
+        flag = values[1]
+        return domain + " " + ipaddress + " " + flag
+    else:
+        return domain + " - Error:HOST NOT FOUND"
+
 def server():
+    # turn PROJI-DNSTS.txt into dictionary
+    newDict = file_to_dict("PROJI-DNSTS.txt")
     try:
         ts = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print("[TS]: Server socket created")
@@ -36,6 +75,8 @@ def server():
     #create a list temporarily to hold domain names from client
     domain_list = []
 
+    # receive the NS flagged domain names
+    # from the client
     cond = True   
     while cond:
         data_from_client = csockid.recv(1024).decode('ascii')
@@ -45,6 +86,12 @@ def server():
 	elif data_from_client == "*":
 	    cond = False
 	time.sleep(2)
+
+    print("\n[TS] Domains received from client:")		
+    domain_list = [str(r) for r in domain_list]
+    print(domain_list)
+    print("\n")
+
 
 if __name__ == "__main__":
     t3 = threading.Thread(name='server', target=server)

@@ -135,7 +135,7 @@ def client():
         print("[C] Sending domain to TS: {}".format(domainName)) #this helps with sending domainName efficiently. put time instead.
         cs2.send(domainName.encode('ascii'))
    	time.sleep(2) 
-    cs.send("*".encode('ascii'))	
+    cs2.send("*".encode('ascii'))	
     time.sleep(8)
 
 if __name__ == "__main__":

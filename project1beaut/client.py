@@ -129,6 +129,14 @@ def client():
     # connect to top server
     cs2.connect(topServerBinding)
 
+    #send contents on lst to server
+    print("\n")
+    for domainName in send_to_ts:
+        print("[C] Sending domain to TS: {}".format(domainName)) #this helps with sending domainName efficiently. put time instead.
+        cs2.send(domainName.encode('ascii'))
+   	time.sleep(2) 
+    cs.send("*".encode('ascii'))	
+    time.sleep(8)
 
 if __name__ == "__main__":
     #t1 = threading.Thread(name='server', target=server)

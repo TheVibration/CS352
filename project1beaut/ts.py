@@ -33,6 +33,19 @@ def server():
     csockid, addr = ts.accept()
     print("[RS]: Got a connection request from a client at {}\n".format(addr))
 
+    #create a list temporarily to hold domain names from client
+    domain_list = []
+
+    cond = True   
+    while cond:
+        data_from_client = csockid.recv(1024).decode('ascii')
+        if data_from_client != "*":
+	    domain_list.append(data_from_client)
+	    print("[TS]: data received from client: {}".format(data_from_client))
+	elif data_from_client == "*":
+	    cond = False
+	time.sleep(2)
+
 if __name__ == "__main__":
     t3 = threading.Thread(name='server', target=server)
     t3.start()

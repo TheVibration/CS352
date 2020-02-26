@@ -111,6 +111,7 @@ def client():
 
     if send_to_ts:
         #create a socket for ts connection
+	cs.close()
         try:
             cs2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             print("\n[C]: Client socket for ts created")
@@ -123,7 +124,8 @@ def client():
     print("[C]: Top Server's host is {} and ip is {}.".format(TShostname, tsHostip))
     
     # client connects to ts host machine
-    topServerBinding = (TShostname,tsListenPort)
+    topServerBinding = ('ilab1.cs.rutgers.edu',tsListenPort)
+
     # connect to top server
     cs2.connect(topServerBinding)
 

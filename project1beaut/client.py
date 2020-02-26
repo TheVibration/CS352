@@ -17,6 +17,14 @@ def writing(dnList, fileName):
         f.write(domain+"\n")
     f.close()
 
+# this functions splits the return from dn.py
+def returnSplitter(lst):
+    send_to_ts = []
+    for val in lst:
+	holder = val.split()
+	send_to_ts.append(holder[0])
+    return send_to_ts
+
 def client():
     try:
         cs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -71,6 +79,7 @@ def client():
 	    cond = False
     
     print("\n[C] hostname,ip,flag in list:")
+    return_lst = [str(r) for r in return_lst] #gets rid of u
     print(return_lst)
     
     # this list contains valid domain name mappings
@@ -86,7 +95,13 @@ def client():
     print(a_rslst)	
     print("\n[C] list with NS string that need to be sent to ts.py:")
     print(ns_tslst)
-
+	
+    # this contents of this list will
+    # be sent to the ts server to look at 
+    # its dns name to ip mappings
+    send_to_ts = returnSplitter(ns_tslst)
+    print("\n[C] domain names to try in ts:")
+    print(send_to_ts)
 if __name__ == "__main__":
     #t1 = threading.Thread(name='server', target=server)
     #t1.start()

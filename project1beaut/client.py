@@ -43,13 +43,24 @@ def client():
     for domainName in lst:
         print(domainName) #this helps with sending domainName efficiently. put time instead.
         cs.send(domainName.encode('utf-8'))
-   	time.sleep(1) 
+   	time.sleep(2) 
 	msg_recv = cs.recv(100).decode('utf-8')
 	print("[C] Message received from RS Server: {}".format(msg_recv))
     cs.send("0".encode('utf-8'))	
     time.sleep(10)
-    msg = cs.recv(1024).decode('utf-8')
-    print("[C] {}".format(msg))
+    #msg = cs.recv(1024).decode('utf-8')
+    #print("[C] {}".format(msg))
+    return_lst = []
+    cond = True
+    while cond:
+	from_rs = cs.recv(2048).decode('utf-8')
+	time.sleep(2)
+	return_lst.append(from_rs)
+	if from_rs == "0":
+	    cond = False
+    print(return_lst)
+    print("Program ended")
+	
     #receive message from server after sending domain names to server
     #to salman abu khan, this is where the test message should be received, but isn't.
     #after we can implement receiving one message back from the root server, then we can 

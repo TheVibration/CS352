@@ -11,7 +11,7 @@ def sendData(value,sock):
     sock.send(value.encode('utf-8'))
 
 def file_to_dict(fileName):
-
+    
     f = open(fileName, "r")
 
     lst = []
@@ -46,23 +46,6 @@ def return_dns_query(dictionary,domain):
         return domain + " " + ipaddress + " " + flag
     else:
         return domain + " - NS"
-
-    counter = 0
-    for entry in lst:
-        if counter == 0:
-            currentKey = entry
-            values = []
-            counter = counter + 1
-        elif counter == 1:
-            values.append(entry)
-            counter = counter + 1
-        elif counter == 2:
-            values.append(entry)
-            dic[currentKey] = values
-            counter = 0
-    
-    f.close()
-    return dic
 
 def server():
     newDict = file_to_dict("PROJI-DNSRS.txt")
@@ -108,15 +91,21 @@ def server():
         if data_from_client == "0":
             cond = False
     time.sleep(5)
-	
+    domain_list.remove("0")	
     print("\n")		
-    
+
+    #a way to send the correct string back to client
     for dn in domain_list:
-	if dn == "0":
-	    domain_list.remove("0")
+        result = return_dns_query(newDict,dn)
+ 	csockid.send(result.encode('utf-8'))
+	time.sleep(3)
+    csockid.send("0".encode('utf-8'))
     print(domain_list)
+    print("\n")
     print(newDict)
-    csockid.sendall("hi from server!".encode('utf-8'))
+    print("\n")
+    print(return_dns_query(newDict,"www.google.com"))
+    #csockid.sendall("hi from server!".encode('utf-8'))
     print("IM TRYING TO SEND TO CLIENT")
     #csockid.send("hi".encode('utf-8'))
     #print("[RS] Tester tried sending to client.")

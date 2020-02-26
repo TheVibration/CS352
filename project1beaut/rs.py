@@ -6,7 +6,7 @@ import socket
 
 rsListenPort = sys.argv[1]
 rsListenPort = int(rsListenPort)
-
+#djdjdjd
 def sendData(value,sock):
     sock.send(value.encode('utf-8'))
 
@@ -80,35 +80,35 @@ def server():
 
     cond = True   
     while cond:
-        data_from_client = csockid.recv(2048).decode('utf-8')
+        data_from_client = csockid.recv(1024).decode('utf-8')
 	domain_list.append(data_from_client)
 	print("[RS]: data received from client: {}".format(data_from_client))
-	time.sleep(1)
-	csockid.send(data_from_client.encode('utf-8'))
-	time.sleep(1)
+	time.sleep(2)
+	#csockid.send(data_from_client.encode('utf-8'))
+	#time.sleep(1)
 	#echo data_from_client back to client
 	
-        if data_from_client == "0":
+        #where appending 1 problem is happening
+        if data_from_client == "*":
             cond = False
     time.sleep(5)
-    domain_list.remove("0")	
-    print("\n")		
-
+    
+    if "*" in domain_list:
+        domain_list.remove("*")	
+    
+    print("\n[RS] Domains received from client:")		
+    print(domain_list)
+    print("\n")
     #a way to send the correct string back to client
     for dn in domain_list:
         result = return_dns_query(newDict,dn)
+	print("[RS] sending to client: {}".format(result))
  	csockid.send(result.encode('utf-8'))
 	time.sleep(3)
     csockid.send("00".encode('utf-8'))
-    print(domain_list)
-    print("\n")
+    #print(domain_list)
+    print("\nDNS name server as hash map:")
     print(newDict)
-    print("\n")
-    print(return_dns_query(newDict,"www.google.com"))
-    #csockid.sendall("hi from server!".encode('utf-8'))
-    print("IM TRYING TO SEND TO CLIENT")
-    #csockid.send("hi".encode('utf-8'))
-    #print("[RS] Tester tried sending to client.")
 
     # these can be deleted just to test sending and receiving with single vals
     #data = csockid.recv(1024).decode('utf-8')

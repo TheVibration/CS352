@@ -33,7 +33,8 @@ def client():
     # open up file and go through each line, place contents in list called lst
     with open("PROJI-HNS.txt", "r") as f:
         lines = f.readlines()
-        #print(lines)
+        #prish hbp45@ilab.cs.rutgers.edu
+    #t(lines)
     for line in lines:
         lst.append(line.strip())
     
@@ -44,23 +45,28 @@ def client():
         print(domainName) #this helps with sending domainName efficiently. put time instead.
         cs.send(domainName.encode('utf-8'))
    	time.sleep(2) 
-	msg_recv = cs.recv(100).decode('utf-8')
-	print("[C] Message received from RS Server: {}".format(msg_recv))
-    cs.send("0".encode('utf-8'))	
-    time.sleep(10)
+	#msg_recv = cs.recv(100).decode('utf-8')
+	#print("[C] Message received from RS Server: {}".format(msg_recv))
+    cs.send("*".encode('utf-8'))	
+    time.sleep(8)
     #msg = cs.recv(1024).decode('utf-8')
     #print("[C] {}".format(msg))
     return_lst = []
+    print("\n")
+    
     cond = True
+    #this while loop begins receiving the hostname,ip,flag
     while cond:
-	from_rs = cs.recv(2048).decode('utf-8')
+	from_rs = cs.recv(1024).decode('utf-8')
 	time.sleep(2)
 	if from_rs != "00":
+	    print("[C] debugger {}".format(from_rs))
 	    return_lst.append(from_rs)
 	elif from_rs == "00":
 	    cond = False
+    
+    print("\n[C] hostname,ip,flag in list:")
     print(return_lst)
-    print("Program ended")
 	
     #receive message from server after sending domain names to server
     #to salman abu khan, this is where the test message should be received, but isn't.

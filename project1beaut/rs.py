@@ -54,6 +54,10 @@ def server():
     time.sleep(5)
 	
     print("\n")		
+    
+    for dn in domain_list:
+	if dn == "0":
+	    domain_list.remove("0")
     print(domain_list)
     csockid.sendall("hi from server!".encode('utf-8'))
     print("IM TRYING TO SEND TO CLIENT")

@@ -21,6 +21,23 @@ def file_to_dict(fileName):
         for word in line.split():
             lst.append(word)
 
+    counter = 0
+    for entry in lst:
+        if counter == 0:
+            currentKey = entry
+            values = []
+            counter = counter + 1
+        elif counter == 1:
+            values.append(entry)
+            counter = counter + 1
+        elif counter == 2:
+            values.append(entry)
+            dic[currentKey] = values
+            counter = 0
+    
+    f.close()
+    return dic
+
 def return_dns_query(dictionary,domain):
     if domain in dictionary:
         values = dictionary[domain]

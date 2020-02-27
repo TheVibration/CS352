@@ -97,7 +97,7 @@ def server():
 	    cond = False
 	time.sleep(2)
         	
-    time.sleep(5)
+    time.sleep(3)
     
     #if "*" in domain_list:
         #domain_list.remove("*")	

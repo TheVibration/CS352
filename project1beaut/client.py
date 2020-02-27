@@ -97,6 +97,8 @@ def client():
 	    a_rslst.append(string)
 	else:
 	    ns_tslst.append(string)
+    writing(a_rslst,"RESOLVED.txt")
+
     print("\n[C] list with A strings from RS:")
     print(a_rslst)	
     print("\n[C] list with NS string that need to be sent to ts.py:")
@@ -138,7 +140,7 @@ def client():
     cs2.send("*".encode('ascii'))	
     time.sleep(1)
 
-    return_from_ts = []
+    ts_add = []
     print("\n")
 
     cond = True
@@ -147,17 +149,15 @@ def client():
 	time.sleep(2)
 	if from_ts != "00":
 	    print("[C] Received from TS: {}".format(from_ts))
-	    return_from_ts.append(from_ts)
+	    ts_add.append(from_ts)
 	elif from_ts == "00":
 	    cond = False
     
     print("\n[C] hostname,ip,flag from ts:")
-    return_from_ts = [str(r) for r in return_lst]
-    print(return_from_ts)
+    ts_add = [str(r) for r in ts_add]
+    writing(ts_add,"RESOLVED.txt")
+    print(ts_add)
 
-    #msg = cs2.recv(1024).decode('ascii')
-    #print(msg)
-    #print("finished")
 if __name__ == "__main__":
     #t1 = threading.Thread(name='server', target=server)
     #t1.start()

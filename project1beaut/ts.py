@@ -103,12 +103,10 @@ def tsserver():
     print("\nTS DNS table as hash map:")
     print(newDict)
     
-    #csockid.send("hi from TS".encode('ascii'))
-
+    ts.close()
+    exit()
 if __name__ == "__main__":
     t3 = threading.Thread(name='tsserver', target=tsserver)
     t3.start()
 
     time.sleep(random.random() * 5)
-    print("Done.")
-

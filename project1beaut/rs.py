@@ -122,17 +122,10 @@ def server():
     #print(domain_list)
     print("\nRS DNS table as hash map:")
     print(newDict)
-
+    rs.close()
+    exit()
 if __name__ == "__main__":
     t1 = threading.Thread(name='server', target=server)
     t1.start()
 
     time.sleep(random.random() * 5)
-    #t2 = threading.Thread(name='client', target=client)
-    #t2.start()
-
-    #time.sleep(40)
-    print("Done.")
-
-
-   

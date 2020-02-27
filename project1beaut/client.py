@@ -126,7 +126,7 @@ def client():
     print("[C]: Top Server's host is {} and ip is {}.".format(TShostname, tsHostip))
     
     # client connects to ts host machine
-    topServerBinding = ('ilab1.cs.rutgers.edu',tsListenPort)
+    topServerBinding = (TShostname,tsListenPort)
 
     # connect to top server
     cs2.connect(topServerBinding)

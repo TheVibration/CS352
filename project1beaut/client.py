@@ -136,8 +136,28 @@ def client():
         cs2.send(domainName.encode('ascii'))
    	time.sleep(2) 
     cs2.send("*".encode('ascii'))	
-    time.sleep(8)
+    time.sleep(1)
 
+    return_from_ts = []
+    print("\n")
+
+    cond = True
+    while cond:
+	from_ts = cs2.recv(1024).decode('ascii')
+	time.sleep(2)
+	if from_ts != "00":
+	    print("[C] Received from TS: {}".format(from_ts))
+	    return_from_ts.append(from_ts)
+	elif from_ts == "00":
+	    cond = False
+    
+    print("\n[C] hostname,ip,flag from ts:")
+    return_from_ts = [str(r) for r in return_lst]
+    print(return_from_ts)
+
+    #msg = cs2.recv(1024).decode('ascii')
+    #print(msg)
+    #print("finished")
 if __name__ == "__main__":
     #t1 = threading.Thread(name='server', target=server)
     #t1.start()

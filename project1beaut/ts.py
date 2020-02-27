@@ -8,7 +8,6 @@ tsListenPort = sys.argv[1]
 tsListenPort = int(tsListenPort)
 
 def file_to_dict(fileName):
-    
     f = open(fileName, "r")
 
     lst = []
@@ -44,7 +43,7 @@ def return_dns_query(dictionary,domain):
     else:
         return domain + " - Error:HOST NOT FOUND"
 
-def server():
+def tsserver():
     # turn PROJI-DNSTS.txt into dictionary
     newDict = file_to_dict("PROJI-DNSTS.txt")
     try:
@@ -86,15 +85,28 @@ def server():
 	elif data_from_client == "*":
 	    cond = False
 	time.sleep(2)
-
+    time.sleep(1)
     print("\n[TS] Domains received from client:")		
     domain_list = [str(r) for r in domain_list]
     print(domain_list)
     print("\n")
+   
+    # send the correct string back to client
+    for dn in domain_list:
+	result = return_dns_query(newDict,dn.lower())
+	print("[TS] sending to client: {}".format(result))
+	csockid.send(result.encode('ascii'))
+	time.sleep(3)
+    csockid.send("00".encode('ascii'))
 
+    #print hash map
+    print("\nTS DNS table as hash map:")
+    print(newDict)
+    
+    #csockid.send("hi from TS".encode('ascii'))
 
 if __name__ == "__main__":
-    t3 = threading.Thread(name='server', target=server)
+    t3 = threading.Thread(name='tsserver', target=tsserver)
     t3.start()
 
     time.sleep(random.random() * 5)

@@ -110,9 +110,9 @@ def server():
     #a way to send the correct string back to client
     for dn in domain_list:
         result = return_dns_query(newDict,dn.lower())
-	    print("[RS] sending to client: {}".format(result))
+	print("[RS] sending to client: {}".format(result))
         csockid.send(result.encode('ascii'))
-	    time.sleep(3)
+	time.sleep(3)
     csockid.send("00".encode('ascii'))
 
     time.sleep(1)

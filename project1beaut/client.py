@@ -62,7 +62,7 @@ def client():
         cs.send(domainName.encode('ascii'))
    	time.sleep(2) 
     cs.send("*".encode('ascii'))	
-    time.sleep(8)
+    time.sleep(6)
     
     # return_lst is going to hold the host,ip,flag returned from rs
     return_lst = []

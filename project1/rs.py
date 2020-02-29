@@ -1,91 +1,131 @@
-import threading 
+import threading
 import time
 import random
-import socket
 import sys
+import socket
 
 rsListenPort = sys.argv[1]
 rsListenPort = int(rsListenPort)
+#djdjdjd
+def sendData(value,sock):
+    sock.send(value.encode('utf-8'))
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as rs:
+def file_to_dict(fileName):
     
-    print("[rs]: root server created")
+    f = open(fileName, "r")
+
+    lst = []
+    dic = {}
+
+    for line in f:
+        for word in line.split():
+            lst.append(word)
+
+    counter = 0
+    for entry in lst:
+        if counter == 0:
+            currentKey = entry.lower()
+            values = []
+            counter = counter + 1
+        elif counter == 1:
+            values.append(entry)
+            counter = counter + 1
+        elif counter == 2:
+            values.append(entry)
+            dic[currentKey] = values
+            counter = 0
     
+    f.close()
+    return dic
+
+# go through the dictionary and find where the tshostname is
+def getTS(dictionary):
+    for key in dictionary:
+        k = dictionary[key]
+	if k[1] == "NS":
+	    returnVal = key 
+            break
+    return returnVal
+
+def return_dns_query(dictionary,domain):
+    if domain in dictionary:
+        values = dictionary[domain]
+        ipaddress = values[0] 
+        flag = values[1]
+        return domain + " " + ipaddress + " " + flag
+    else:
+        return domain + " - NS"
+
+def server():
+    newDict = file_to_dict("PROJI-DNSRS.txt")
+
+    try:
+        rs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        print("[RS]: Server socket created")
+    except socket.error as err:
+        print('socket open error: {}\n'.format(err))
+        exit()
+
     # get root server host name
     rsServerHost = socket.gethostname()
-    print("[rs]: root server name is {}".format(rsServerHost))
+    print("[RS]: root server name is {}".format(rsServerHost))
     
     # get root server ip address
     rsHostip = socket.gethostbyname(rsServerHost)
-    print("[rs] root server ip is {}".format(rsHostip))
+    print("[RS] root server ip is {}".format(rsHostip))
     
     #bind host,port
     rs.bind((rsServerHost,rsListenPort))
 
     #root server listen
-    rs.listen()
+    rs.listen(5)
 
     # accept incoming connections
     csockid, addr = rs.accept()
-    print("[rs]: Got a connection request from a client at {}".format(addr))
-   
+    print("[RS]: Got a connection request from a client at {}\n".format(addr))
+
     #create a list temporarily to hold domain names from client
     domain_list = []
-<<<<<<< HEAD
-    with csockid:
-        print("Connected by ", addr)
-        print("\n")
-        while True:
-            data_from_client = csockid.recv(1024).decode('utf-8')
-            print("[rs]: data received from client: {}".format(data_from_client))
-            domain_list.append(data_from_client)
-            if not data_from_client:
-                break
-        #test sending from rs.py to client
-        #msg = "testing testing testing!"
-        #csockid.send(msg.encode('utf-8'))
-=======
-    print("Connected by ", addr)
-    print("\n")
->>>>>>> fe263a48fc9357ae835cfd7464f5b5ecb83c1577
+
+    cond = True   
+    while cond:
+        data_from_client = csockid.recv(1024).decode('ascii')
+        if data_from_client != "*":
+	    domain_list.append(data_from_client)
+	    print("[RS]: data received from client: {}".format(data_from_client))
+	elif data_from_client == "*":
+	    cond = False
+	time.sleep(2)
+        	
+    time.sleep(3)
     
-    msg = "tester"
-    msg2 = "tester2"
-    csockid.send(msg.encode('utf-8'))
-    csockid.send(msg2.encode('utf-8'))
-    while True:
-        data_from_client = csockid.recv(1024).decode('utf-8')
-        print("[rs]: data received from client: {}".format(data_from_client))
-        domain_list.append(data_from_client)
-
-        if not data_from_client:
-            break
-
-    #for domain in domain_list:
-        #csockid.send(domain.encode('utf-8'))
+    #if "*" in domain_list:
+        #domain_list.remove("*")	
     
-
-    #this was created because for some reason
-    #the last value the server is receiving from
-    #the client is ''. so this loop goes through
-    #the domain_list and removed that ''.
-    counter = 0
-    for domain in domain_list:
-        if domain == '':
-            del domain_list[counter]
-        else:
-            counter = counter+1
-
-    print("\n")
+    print("\n[RS] Domains received from client:")		
+    domain_list = [str(r) for r in domain_list]
     print(domain_list)
+    print("\n")
 
-"""
+    #a way to send the correct string back to client
+    for dn in domain_list:
+        result = return_dns_query(newDict,dn.lower())
+	print("[RS] sending to client: {}".format(result))
+        csockid.send(result.encode('ascii'))
+	time.sleep(3)
+    csockid.send("00".encode('ascii'))
+
+    time.sleep(1)
+    tsHostName = getTS(newDict)
+    csockid.send(tsHostName.encode("ascii"))
+    
+    #print(domain_list)
+    print("\nRS DNS table as hash map:")
+    print(newDict)
+    rs.close()
+    exit()
 if __name__ == "__main__":
-    t1 = threading.Thread(name="server", target=server)
+    t1 = threading.Thread(name='server', target=server)
     t1.start()
 
     time.sleep(random.random() * 5)
-
-    time.sleep(5)
-    print("Finished")
-"""

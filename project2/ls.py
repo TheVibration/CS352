@@ -53,9 +53,7 @@ def lsserver(lsListenPort, ts1HostName, ts1ListenPort, ts2HostName, ts2ListenPor
         domain = csockid.recv(100).decode('utf-8')
         if domain != "close":
             from_clientpy.append(domain)
-            print("[LS]: Received: {}\n".format(domain))
-            #csockid.send(domain.encode('utf-8'))
-            #csockid.close()
+            print("[LS]: Received: {}".format(domain))
 
             #***************************************
             val = client("ts1",domain,ts1HostName,ts1ListenPort)
@@ -73,12 +71,6 @@ def lsserver(lsListenPort, ts1HostName, ts1ListenPort, ts2HostName, ts2ListenPor
             csockid.close()
             ls.close()
             break
-
-    print(from_clientpy)
-    print(final)
-    #for domain in from_clientpy:
-       #val = client(domain,ts1HostName,ts1ListenPort)
-       #print(val)
 
 if __name__ == '__main__':
     lsserver(int(sys.argv[1]), sys.argv[2], int(sys.argv[3]), sys.argv[4], int(sys.argv[5]))

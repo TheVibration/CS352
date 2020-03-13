@@ -21,7 +21,7 @@ def lsclient(domain, lsHostName,lsListenPort):
     lscs.send(domain.encode('utf-8'))
 
     #receive from ls
-    mapping = lscd.recv(1024).decode('utf-8')
+    mapping = lscs.recv(100).decode('utf-8')
 
     #close lscs
     lscs.close()
@@ -31,6 +31,7 @@ def lsclient(domain, lsHostName,lsListenPort):
 if __name__ == "__main__":
     with open('RESOLVED.txt', 'w+') as f:
         with open('PROJ2-HNS.txt', 'r') as domains:
-           lines = domains.read().splitlines()
-           for line in lines:
-               f.write(lsclient(line.lower(),sys.argv[1],int(sys.argv[2]) + "\n"))
+            lines = domains.read().splitlines()
+            for line in lines:
+                f.write(lsclient(line.lower(),sys.argv[1],int(sys.argv[2])) + "\n")
+    lsclient("close", sys.argv[1],int(sys.argv[2]))

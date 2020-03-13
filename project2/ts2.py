@@ -35,7 +35,8 @@ def tsserver(table,ts2ListenPort):
         ts2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         tsHostName = socket.gethostname()
         tsHostIp = socket.gethostbyname(tsHostName)
-        print("[TS2]: Server host and ip is: {} {}".format(tsHostName,tsHostIp))
+        print("[TS2]: Server host: {}".format(tsHostName))
+        print("[TS2]: Server IP Adress: {}".format(tsHostIp))
     except socket.error as err:
         print("socket open error: {}\n".format(err))
         exit()
@@ -60,9 +61,6 @@ def tsserver(table,ts2ListenPort):
         else:
             string = domain + " - Error:HOST NOT FOUND"
             csockid.send(string.encode('utf-8'))
-        csockid.close()
- 
-        print(domain)
         csockid.close()
 
 if __name__ == '__main__':

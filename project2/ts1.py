@@ -34,7 +34,8 @@ def tsserver(table,ts1ListenPort):
         ts1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         tsHostName = socket.gethostname()
         tsHostIp = socket.gethostbyname(tsHostName)
-        print("[TS1]: Server host and ip is: {} {}".format(tsHostName,tsHostIp))
+        print("[TS1]: Server host: {}".format(tsHostName))
+        print("[TS1]: Server IP Address: {}".format(tsHostIp))
     except socket.error as err:
         print("socket open error: {}\n".format(err))
         exit()
@@ -60,8 +61,6 @@ def tsserver(table,ts1ListenPort):
             csockid.send("None".encode('utf-8'))
         csockid.close()
  
-        print(domain)
-        csockid.close()
 if __name__ == '__main__':
     dnshash = file_to_dict("PROJ2-DNSTS1.txt")
     tsserver(dnshash,int(sys.argv[1]))

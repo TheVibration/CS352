@@ -35,3 +35,4 @@ if __name__ == "__main__":
             for line in lines:
                 f.write(lsclient(line.lower(),sys.argv[1],int(sys.argv[2])) + "\n")
     lsclient("close", sys.argv[1],int(sys.argv[2]))
+    print("Done")

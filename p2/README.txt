@@ -1,0 +1,6 @@
+Harsh Patel hbp45
+Salman Ashraf hbp45
+
+The client.py client only takes responses from the LS.py server. The LS.py takes in the domain names that the client is requesting and sends it to the ts1 and ts2 servers. If after a certain period of time (5 seconds), there isn't a responses from both ts1 and ts2, then the ls server will send the client a string with the domain name and Error:HOST NOT FOUND. Otherwise, since at least one of the ts servers will have the domain name, the string with domain,ip, and A flag is returned. We used the time module and figured out how to do a timeout by calculating the start time and end time and if within that period of time, no value is returned then domain with error gets returned. 
+A problem we faced implementing the code for this project was figuring out how to wait a certain period of time and responsing to the client with the appropriate response.
+One thing I noticed is that this LS server represented a sort of proxy DNS name server for the client. The reason is because a proxy or cache works by a client sending a request to the proxy and the proxy sends the request to the correct places, afterwards, it stores the values retrieved in the cache and sends it to the client. Learning how to do this practically, rather than just understanding it theoretically is very important. 

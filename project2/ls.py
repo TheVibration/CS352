@@ -52,19 +52,31 @@ def lsserver(lsListenPort, ts1HostName, ts1ListenPort, ts2HostName, ts2ListenPor
         
         domain = csockid.recv(100).decode('utf-8')
         if domain != "close":
+            start = time.time()
+
             from_clientpy.append(domain)
             print("[LS]: Received: {}".format(domain))
 
             #***************************************
             val = client("ts1",domain,ts1HostName,ts1ListenPort)
-            if val != "None":
+            if val:
+                #print("from ts1: {}".format(val))
                 final.append(val)
                 csockid.send(val.encode('utf-8'))
                 csockid.close()
             else:
                 val = client("ts2",domain,ts2HostName,ts2ListenPort)
-                final.append(val)
-                csockid.send(val.encode('utf-8'))
+                if val:
+                    #print("from ts2: {}".format(val))
+                    final.append(val)
+                    csockid.send(val.encode('utf-8'))
+                else:
+                    time.sleep(5)
+                    string = domain + " - Error:HOST NOT FOUND"
+                    if time.time()-start >= 5:
+                        csockid.send(string.encode('utf-8'))
+                    else:
+                        csockid.send(string.encode('utf-8'))
                 csockid.close()
         else:
             csockid.send("closing".encode('utf-8'))

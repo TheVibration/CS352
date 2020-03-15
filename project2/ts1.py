@@ -57,8 +57,6 @@ def tsserver(table,ts1ListenPort):
             flag = values[1]
             string = domain + " " + ipaddress + " " + flag
             csockid.send(string.encode('utf-8'))
-        else:
-            csockid.send("None".encode('utf-8'))
         csockid.close()
  
 if __name__ == '__main__':

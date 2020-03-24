@@ -1,0 +1,9 @@
+netflix.com 123.123.123.123 A
+qtsdatacenter.aws.edu 128.60.3.2 A
+www.rutgers.com 192.64.4.4 A
+mx.rutgers.com 192.64.4.5 A
+cse.ucsd.edu 22.8.22.8 A
+www.cs.COLUMBIA.edu 199.41.99.4 A
+grep.cs.princeton.edu 182.49.3.2 A
+www.ibm.com 64.42.3.4 A
+www.google.edu 8.7.45.2 A

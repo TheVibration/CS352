@@ -126,6 +126,9 @@ def client():
     print("[C]: Top Server's host is {} and ip is {}.".format(TShostname, tsHostip))
     
     # client connects to ts host machine
+    if TShostname == "localhost":
+        TShostname = socket.gethostname()
+
     topServerBinding = (TShostname,tsListenPort)
 
     # connect to top server
